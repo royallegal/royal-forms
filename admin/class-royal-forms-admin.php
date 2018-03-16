@@ -78,7 +78,7 @@ class Royal_Forms_Admin {
 	    // serialize the array with all questions information and data
 	    $questions  = json_encode($content["question"]);
 	    // define the table name
-	    $table_name = $wpdb->prefix . "iraquiz";
+	    $table_name = $wpdb->prefix . "royalforms";
 	    // user wpdb inser function to insert data to the db (id is auto filled and autoincrement)
 	    $insert = $wpdb->insert( 
 	        $table_name, 
@@ -104,7 +104,7 @@ class Royal_Forms_Admin {
 
 	public function render_royalform_display() {
 	    global $wpdb;
-	    $table_name      = $wpdb->prefix . "iraquiz"; 
+	    $table_name      = $wpdb->prefix . "royalforms"; 
 	    $query = $wpdb->get_results ( "SELECT * FROM $table_name" );
 		include_once( 'partials/royal-forms-admin-display.php' );
 	}
@@ -113,6 +113,9 @@ class Royal_Forms_Admin {
 		$form_create = false;
 		if (isset($_POST) && isset($_POST["question"])) {
 		    $form_create = $this->royalform_form_create($_POST);
+		    if ( isset($form_create) && $form_create == TRUE ) {
+		    	echo '<div class="updated notice"><p>Form created!</p></div>';
+		    }
 		}
 		include_once( 'partials/royal-forms-admin-create.php' );
 	}
