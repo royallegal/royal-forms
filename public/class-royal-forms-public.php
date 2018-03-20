@@ -52,7 +52,7 @@ class Royal_Forms_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-		add_shortcode('iraquiz', array($this, 'render_form'));
+		add_shortcode('royalform', array($this, 'render_form'));
 
 	}
 
@@ -76,7 +76,7 @@ class Royal_Forms_Public {
 
 	public function read_form($id) {
 	    global $wpdb;
-	    $table_name = $wpdb->prefix . "royalforms"; 
+	    $table_name = $wpdb->prefix . "royalforms_content"; 
 	    $query      = $wpdb->get_results ( "SELECT * FROM $table_name WHERE id='$id'" );
 	    return $query[0];
 	}
@@ -84,33 +84,31 @@ class Royal_Forms_Public {
 	public function render_form($props, $content) {
     	global $wpdb;
 
-		$quiz_id = intVal($props["id"]);
-		$quiz    = $this->read_form($quiz_id);
 
-		$quiz_name        = $quiz->quiz_name;
-		$quiz_description = $quiz->quiz_description;
-		$quiz_questions   = json_decode($quiz->questions, false);
+		$form_id = intVal($props["id"]);
+		$form    = $this->read_form($form_id);
 
-		$quiz = [];
-		foreach ($quiz_questions as $question => $value) {
+		$form_name        = $form->form_name;
+		$form_description = $form->form_description;
+		$form_questions   = json_decode($form->form_content, false);
+
+		$form = [];
+		foreach ($form_questions as $question => $value) {
 		    $answers = [];
 		    foreach ($value->answer as $answer) {
 		        array_push($answers, $answer);
 		    }
 
 
-		    array_push($quiz, [
+		    array_push($form, [
 		        "question" => $value->text,
+		        "description" => $value->description,
 		        "type" => $value->type,
 		        "answers" => $answers,
 		    ]);
 		}
 
-		// debug
-		//echo "<br><br><br>";
-		//print_r($quiz);
-
-		$quiz_total = count($quiz);
+		$form_total = count($form);
 
 		include_once( 'partials/royal-forms-public-display.php' );
 	}

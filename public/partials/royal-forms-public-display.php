@@ -1,10 +1,10 @@
-<input type="hidden" class="quiz_total" value="<?=$quiz_total?>" />
+<input type="hidden" class="quiz_total" value="<?=$form_total?>" />
 <div class="container quiz-container">
     <div class="row startpage">
         <div class="col m8">
-            <h1 class="quiz-title"><?=$quiz_name?></h1>
+            <h1 class="quiz-title"><?=$form_name?></h1>
             <hr class="quiz-under-line" />
-            <h3 class="quiz-subtitle"><?=$quiz_description?></h3>
+            <h3 class="quiz-subtitle"><?=$form_description?></h3>
             <button class="btn-quiz-toggle start">TAKE THE QUIZ</button>
         </div>
         <div class="col m4 image-area">
@@ -14,9 +14,9 @@
 
     <?php
         $index = 1;
-        foreach ($quiz as $question) {
-            if ( $index == $quiz_total ) $goto = "access";
-            if ( $index != $quiz_total ) {
+        foreach ($form as $question) {
+            if ( $index == $form_total ) $goto = "access";
+            if ( $index != $form_total ) {
                 $goto = $index+1;
                 $backto = $index-1;
             }
@@ -24,9 +24,12 @@
     <div class="question" id="quiz<?=$index?>">
         <div class="info">
             <?php if ($index>1) { ?> <span class="back backto-<?=$backto?>"></span> <?php } ?>
-            Question <?=$index?> of <?=$quiz_total?>
+            Question <?=$index?> of <?=$form_total?>
         </div>
         <h2><?=$question["question"]?></h2>
+        <?php if ($question["description"]): ?>
+        <h4><?=$question["description"]?></h4>
+        <?php endif; ?>
         <ul class="options">
 
             <!-- RADIO INPUT -->
